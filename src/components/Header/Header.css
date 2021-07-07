@@ -1,0 +1,22 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 15px 30px;
+  color: #ffffff;
+}
+.headerTransparent {
+  background: #181818
+}
+@media (min-width: 992px) {
+  header {
+    padding: 10px 30px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    z-index: 4;
+    background: #181818;
+  }
+}
