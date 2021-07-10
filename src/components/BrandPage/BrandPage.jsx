@@ -7,13 +7,11 @@ import FetchCategories from "../../hooks/fetchCategories";
 
 const BrandPage = (props) => {
   const brand = props.match.params.brand;
-  const { categories } = FetchCategories("http://127.0.0.1:8000/get_all_videos_by_category")
-
+  const { categories } = FetchCategories(`https://gifdeo.herokuapp.com/get_video_from_category/${brand}`)
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(brand)
   return (
     <main className="brandPage">
 
@@ -27,7 +25,7 @@ const BrandPage = (props) => {
       </div>
       <div className="brandPage__movies movieRows__container">
           {categories.map((category) => (
-              <SingleRow title={category.name} videos={category.videos} />
+              <SingleRow title="" videos={category.videos} />
           ))}
       </div>
     </main>

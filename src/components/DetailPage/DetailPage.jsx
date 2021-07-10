@@ -21,8 +21,8 @@ function TabPanel(props) {
 }
 
 const DetailPage = (props) => {
-  const data = FetchMovieInfo(`http://127.0.0.1:8000/get_video_info/${props.match.params.movieId}`).movie
-  const suggestion = FetchSuggestion(`http://127.0.0.1:8000/get_video_suggestion/${props.match.params.movieId}`).movie
+  const data = FetchMovieInfo(`https://gifdeo.herokuapp.com/get_video_info/${props.match.params.movieId}`).movie
+  const suggestion = FetchSuggestion(`https://gifdeo.herokuapp.com/get_video_suggestion/${props.match.params.movieId}`).movie
 
   const [value, setValue] = useState(0);
 

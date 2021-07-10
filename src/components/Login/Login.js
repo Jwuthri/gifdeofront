@@ -98,12 +98,12 @@ const SignupSchema = yup.object().shape({
 
 
 const Login = () => {
-    const { categories } = FetchCategories("http://127.0.0.1:8000/get_all_videos_by_category")
+    const { categories } = FetchCategories("https://gifdeo.herokuapp.com/get_all_videos_by_category")
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(SignupSchema)
     });
     const onSubmit = (data) => {
-        axios.post('http://127.0.0.1:8000/upload_video', data)
+        axios.post('https://gifdeo.herokuapp.com/upload_video', data)
         reset()
     };
 

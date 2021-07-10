@@ -26,21 +26,21 @@ const Collections = () => {
       image:
           "/images/brands/house.png",
       video:
-        "https://vod-bgc-sa-east-1.media.dssott.com/bgui/ps01/disney/bgui/2019/08/01/1564676115-marvel.mp4",
+        "/videos/house-asthma.mp4"
     },
     {
       brand: "movies",
       image:
           "/images/brands/movies.png",
       video:
-        "https://vod-bgc-sa-east-1.media.dssott.com/bgui/ps01/disney/bgui/2020/04/03/1585929840-star-wars.mp4",
+          "/videos/movie.mp4"
     },
     {
       brand: "youtube",
       image:
           "/images/brands/youtube.png",
       video:
-        "https://vod-bgc-sa-east-1.media.dssott.com/bgui/ps01/disney/bgui/2019/08/01/1564676296-national-geographic.mp4",
+          "/videos/youtube.mp4",
     },
   ];
   const config = {
