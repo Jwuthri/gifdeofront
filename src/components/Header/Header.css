@@ -6,8 +6,10 @@ header {
   color: #ffffff;
 }
 .headerTransparent {
-  background: #181818
-}
+  background: linear-gradient(
+      #181818 0%,
+      rgba(0,0,0,0) 100%
+  );}
 @media (min-width: 992px) {
   header {
     padding: 10px 30px;

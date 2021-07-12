@@ -8,12 +8,11 @@
   left: 0;
   bottom: 0;
   z-index: -1;
-  background: rgb(26, 29, 41);
+  background: #181818;
   background: linear-gradient(
-    180deg,
-    rgba(26, 29, 41, 5) 0%,
-    rgba(26, 29, 41, 0.75) 50%,
-    rgba(26, 29, 41, 1) 100%
+    rgba(24, 24, 24, 5) 0%,
+    rgba(24, 24, 24, 0.75) 75%,
+    rgba(0,0,0,0.5) 100%
   );
 }
 .brandPage__background {

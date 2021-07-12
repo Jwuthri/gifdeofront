@@ -1,11 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import FetchCategories from "../../hooks/fetchCategories";
 import axios from "axios";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import YouTube from 'react-youtube';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+function YouTubeGetID(url){
+    url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+}
+
+function matchYoutubeUrl(url) {
+    var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    if(url.match(p)){
+        return url.match(p)[1];
+    }
+    return false;
+}
 
 const Styles = styled.div`
  background: #181818;
@@ -22,6 +40,12 @@ const Styles = styled.div`
    text-align: center;
  }
 
+  .detailPage__iframe{
+    display: flex;
+    //padding-top: 50px;
+    justify-content: center;
+  }
+  
  form {
    display: flex;
    flex-direction: column;
@@ -98,20 +122,67 @@ const SignupSchema = yup.object().shape({
 
 
 const Login = () => {
+    const [url, setUrl] = useState("")
     const { categories } = FetchCategories("https://gifdeo.herokuapp.com/get_all_videos_by_category")
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(SignupSchema)
     });
-    const onSubmit = (data) => {
-        axios.post('https://gifdeo.herokuapp.com/upload_video', data)
-        reset()
+    const opts = {
+        height: '250',
+        width: '400',
+        playerVars: {
+            // https://developers.google.com/youtube/player_parameters
+            autoplay: 1,
+        },
     };
+    const notify_success = () => toast.info('Thank you for your video', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+    });
+
+    const notify_error = (msg) => toast.error(msg, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+    });
+
+    const onSubmit = (data) => {
+        const duration = data.end - data.start
+        if (duration < 1) {
+            notify_error('Is the start/end correct?')
+        } else if (duration > 100) {
+            notify_error('The video is too long (max 100 sec)')
+        } else {
+            axios.post('https://gifdeo.herokuapp.com/upload_video', data)
+            notify_success()
+            reset()
+        }
+    };
+
+    const handleChange = (e) => {
+        if (matchYoutubeUrl(e.target.value)) {
+            setUrl(YouTubeGetID(e.target.value))
+        } else {
+            setUrl("")
+        }
+    }
 
     return (
         <Styles>
+
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="detailPage__iframe">
+                    {url !== "" ? ( <YouTube videoId={url} opts={opts} /> ) : null }
+                </div>
                 <label>Youtube URL</label>
-                <input name="url" placeholder="https://www.youtube.com/watch?v=VBzVlG631qM" type="text" {...register("url")}/>
+                <input name="url" placeholder="https://www.youtube.com/watch?v=VBzVlG631qM" type="text" {...register("url")} onChange={handleChange}/>
                 {errors.url && <p style={{ color: 'red' }}>{errors.url.message}</p>}
                 <label>Title</label>
                 <input name="title" placeholder="Berywam - Give It Up (INTRO)" type="text" {...register("title")}/>
@@ -127,8 +198,8 @@ const Login = () => {
                         <option value={category.name}>{category.name}</option>
                     ))}
                 </select>
-
                 <input type="submit" className="submitButton"/>
+                <ToastContainer />
             </form>
         </Styles>
     );
