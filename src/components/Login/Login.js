@@ -2,19 +2,17 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import FetchCategories from "../../hooks/fetchCategories";
 import axios from "axios";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
 import YouTube from 'react-youtube';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 function YouTubeGetID(url){
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-    return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+    return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_-]/i)[0] : url[0];
 }
 
 function matchYoutubeUrl(url) {
@@ -117,13 +115,15 @@ const Styles = styled.div`
 const SignupSchema = yup.object().shape({
     start: yup.number().required().positive(),
     end: yup.number().required().positive(),
-    url: yup.string().url().required()
+    url: yup.string().url().required(),
+    collection: yup.string().required(),
 });
 
 
 const Login = () => {
     const [url, setUrl] = useState("")
     const { categories } = FetchCategories("https://gifdeo.herokuapp.com/get_all_videos_by_category")
+    console.log(categories)
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(SignupSchema)
     });
@@ -154,6 +154,7 @@ const Login = () => {
     });
 
     const onSubmit = (data) => {
+        console.log(data)
         const duration = data.end - data.start
         if (duration < 1) {
             notify_error('Is the start/end correct?')
@@ -176,7 +177,6 @@ const Login = () => {
 
     return (
         <Styles>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="detailPage__iframe">
                     {url !== "" ? ( <YouTube videoId={url} opts={opts} /> ) : null }
@@ -191,13 +191,14 @@ const Login = () => {
                 {errors.start && <p style={{ color: 'red' }}>{errors.start.message}</p>}
                 <label>End (in seconds)</label>
                 <input name="end" placeholder="43" type="number" step="0.01" {...register("end", { valueAsNumber: true })}/>
-                {errors.end && <p style={{ color: 'red' }}>{errors.end.message}</p>}
+                {errors.end && <p style={{ color: 'red' }}>{errors.end.message}</p>}\
                 <label>Category</label>
                 <select   {...register("collection")}>
                     {categories.map((category) => (
                         <option value={category.name}>{category.name}</option>
                     ))}
                 </select>
+                {errors.collection && <p style={{ color: 'red' }}>{errors.collection.message}</p>}
                 <input type="submit" className="submitButton"/>
                 <ToastContainer />
             </form>

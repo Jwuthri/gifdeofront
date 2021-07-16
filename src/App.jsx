@@ -29,7 +29,7 @@ const App = () => {
             <SearchPage />
             <Footer />
           </Route>
-          <Route path="/login">
+          <Route path="/upload">
             <Header />
             <Login />
             {/*<Footer />*/}

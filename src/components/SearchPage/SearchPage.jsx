@@ -1,9 +1,7 @@
 import React from "react";
 import MovieCard from "../MovieCard";
-import { apiKey } from "../../utils";
 import useSearch from "../../hooks/useSearch";
 import "./SearchPage.css";
-import FetchSuggestion from "../../hooks/fetchSuggestion";
 
 const SearchPage = () => {
   const { query, searchResults, setQuery } = useSearch();

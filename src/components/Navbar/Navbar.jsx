@@ -27,16 +27,11 @@ const Navbar = () => {
               Search
             </Button>
           </Link>
-          <Link to="/login">
+          <Link to="/upload">
             <Button className="navbar__button" startIcon={<BackupIcon />}>
               Upload
             </Button>
           </Link>
-          {/*<Link to="/login">*/}
-          {/*  <Button className="navbar__button" startIcon={<BackupIcon />}>*/}
-          {/*    New Category*/}
-          {/*  </Button>*/}
-          {/*</Link>*/}
       </ul>
     </nav>
   );

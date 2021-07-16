@@ -24,7 +24,7 @@ const DetailPage = (props) => {
   const data = FetchMovieInfo(`https://gifdeo.herokuapp.com/get_video_info/${props.match.params.movieId}`).movie
   const suggestion = FetchSuggestion(`https://gifdeo.herokuapp.com/get_video_suggestion/${props.match.params.movieId}`).movie
 
-  const [value, setValue] = useState(0);
+  const [value] = useState(0);
 
 
   return (
@@ -33,7 +33,7 @@ const DetailPage = (props) => {
             <div className="detailPage__info">
                 <h2 className="detailPage__title">{data.title}</h2>
                 <div className="detailPage__iframe">
-                    <iframe src={`https://muse.ai/embed/${data.svid}?logo=0`} width="600" height="400" allowFullScreen />
+                    <iframe src={`https://muse.ai/embed/${data.svid}?logo=0`} title={data.title} width="600" height="400" allowFullScreen />
                 </div>
                 <div>
                     <p>Views {data.views} </p>
